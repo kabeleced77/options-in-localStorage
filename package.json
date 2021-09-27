@@ -1,0 +1,33 @@
+{
+  "name": "@kabeleced/options-in-localstorage",
+  "version": "1.0.0",
+  "description": "This package provides option handling using browser's localStorage. It actually is an implementation of Typescript interfaces IOptionsAsync and IOptionAsync.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "test": "jest",
+    "pack": "npm run build && npm pack"
+  },
+  "keywords": [
+    "Typescript",
+    "options",
+    "settings"
+  ],
+  "author": "Kabeleced",
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "jest": "^27.2.0",
+    "mockzilla-webextension": "^0.13.0",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "@kabeleced/interface-options": "file:../interface-options/kabeleced-interface-options-1.0.0.tgz",
+    "@types/webextension-polyfill": "^0.8.0",
+    "webextension-polyfill": "^0.8.0"
+  }
+}
