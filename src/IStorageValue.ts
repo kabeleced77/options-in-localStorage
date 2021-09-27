@@ -1,5 +1,5 @@
 export interface IStorageValue {
   value(): string;
-  defaultValue(): string;
+  default(): string;
   fromJson(json: { [s: string]: string }): IStorageValue;
 }

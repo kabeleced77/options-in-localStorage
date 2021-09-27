@@ -6,7 +6,7 @@ export class StorageValue implements IStorageValue {
   public value(): string {
     return this.storageValue
   }
-  public defaultValue(): string {
+  public default(): string {
     return this.storageDefaultValue
   }
   public fromJson(json: { [s: string]: string }): IStorageValue {

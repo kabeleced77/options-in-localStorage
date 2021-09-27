@@ -32,12 +32,12 @@ export class OptionInLocalStorage implements IOptionAsync {
    * @returns default value save in storage; if nothing has been saved so far given default value is saved and returned.
    */
   public async default(): Promise<string> {
-    return (await this.getStorageValue(this.optionName, this.defaultValue)).defaultValue()
+    return (await this.getStorageValue(this.optionName, this.defaultValue)).default()
   }
   public async reset(): Promise<void> {
     const storageDefaultValue = (
       await this.getStorageValue(this.optionName, this.defaultValue)
-    ).defaultValue()
+    ).default()
     return this.toLocalStorage(
       this.optionName,
       new StorageValue(storageDefaultValue, storageDefaultValue),
@@ -47,7 +47,7 @@ export class OptionInLocalStorage implements IOptionAsync {
     const storageValue = await this.getStorageValue(this.optionName, this.defaultValue)
     return this.toLocalStorage(
       this.optionName,
-      new StorageValue(updateFunction(storageValue.value()), storageValue.defaultValue()),
+      new StorageValue(updateFunction(storageValue.value()), storageValue.default()),
     )
   }
   private async getStorageValue(optionName: string, defaultValue: string): Promise<IStorageValue> {

@@ -15,7 +15,7 @@ export class OptionsInLocalStorage implements IOptionsAsync {
     return defaultValue
       ? new OptionInLocalStorage(
           name,
-          (await this.getOrSetStorageValue(name, defaultValue)).defaultValue(),
+          (await this.getOrSetStorageValue(name, defaultValue)).default(),
         )
       : new OptionInLocalStorage(name)
   }
