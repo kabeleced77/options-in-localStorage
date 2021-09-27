@@ -1,16 +1,16 @@
 import { IStorageValue } from './IStorageValue'
 
 export class StorageValue implements IStorageValue {
-  constructor(private storageValue: string = '', private storageDefaultValue: string = '') {}
+  constructor(private storageValue: string = '', private storageDefault: string = '') {}
 
   public value(): string {
     return this.storageValue
   }
   public default(): string {
-    return this.storageDefaultValue
+    return this.storageDefault
   }
   public fromJson(json: { [s: string]: string }): IStorageValue {
     console.log(`${json}: ${JSON.stringify(json)}`)
-    return new StorageValue(json.storageValue, json.storageDefaultValue)
+    return new StorageValue(json.storageValue, json.storageDefault)
   }
 }
