@@ -10,7 +10,7 @@ export class StorageValue implements IStorageValue {
     return this.storageDefault
   }
   public fromJson(json: { [s: string]: string }): IStorageValue {
-    console.log(`${json}: ${JSON.stringify(json)}`)
+    console.log(`${JSON.stringify(json)}`)
     return new StorageValue(json.storageValue, json.storageDefault)
   }
 }
