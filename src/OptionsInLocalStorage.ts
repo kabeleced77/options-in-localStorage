@@ -11,8 +11,10 @@ export class OptionsInLocalStorage implements IOptionsAsync {
    * @returns array of all options in local storage.
    */
   public async options(): Promise<IOptionAsync[]> {
-    return Object.keys(await this.localStorage().get(null)).map(
-      (option) => new OptionInLocalStorage(option),
+    const allFromStorage = await this.localStorage().get()
+    return Object.keys(allFromStorage).map(
+      (optionName) =>
+        new OptionInLocalStorage(optionName, (<IStorageValue>allFromStorage[optionName]).default()),
     )
   }
   /**
@@ -23,12 +25,10 @@ export class OptionsInLocalStorage implements IOptionsAsync {
    */
   public async option(name: string, defaultValue?: string): Promise<IOptionAsync> {
     const storageValue = await this.getOrSetStorageValue(name, defaultValue ? defaultValue : '')
-    return defaultValue
-      ? new OptionInLocalStorage(name, storageValue.default())
-      : new OptionInLocalStorage(name)
+    return new OptionInLocalStorage(name, storageValue.default())
   }
   /**
-   * Get value from local storage saved by given name of option. If there is no value save in storage, it will be save using given default value.
+   * Get value from local storage saved by given name of option. If there is no value saved in storage, it will be saved using given default value.
    * @param optionName name of option value is save by in local storage.
    * @param defaultValue default value used to initially save option value in local storage by given name.
    * @returns Promise with saved storage value referenced by given name.
