@@ -1,0 +1,20 @@
+{
+  "name": "test-extension",
+  "version": "1.0.0",
+  "description": "Used to test npm-packages in web-extension environment.",
+  "main": "background.js",
+  "scripts": {
+    "update-options": "npm r @kabeleced/options-in-localstorage && npm i ../kabeleced-options-in-localstorage-1.0.0.tgz",
+    "addon": "npx webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.5.5",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "@kabeleced/options-in-localstorage": "file:../kabeleced-options-in-localstorage-1.0.0.tgz"
+  }
+}
