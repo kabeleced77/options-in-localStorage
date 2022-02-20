@@ -1,20 +1,25 @@
+import { ILocalStorage } from './ILocalStorage'
 import { IOptionAsync, IOptionsAsync } from '@kabeleced/interface-options'
-import browser from 'webextension-polyfill'
 import { IStorageValue } from './IStorageValue'
 import { OptionInLocalStorage } from './OptionInLocalStorage'
 import { StorageValue } from './StorageValue'
 
 export class OptionsInLocalStorage implements IOptionsAsync {
-  constructor() {}
+  constructor(private localStorage: ILocalStorage) {}
+
   /**
    * Get all options.
    * @returns array of all options in local storage.
    */
   public async options(): Promise<IOptionAsync[]> {
-    const allFromStorage = await this.localStorage().get()
+    const allFromStorage = await this.localStorage.all()
     return Object.keys(allFromStorage).map(
       (optionName) =>
-        new OptionInLocalStorage(optionName, (<IStorageValue>allFromStorage[optionName]).default()),
+        new OptionInLocalStorage(
+          this.localStorage,
+          optionName,
+          (<IStorageValue>allFromStorage[optionName]).default(),
+        ),
     )
   }
   /**
@@ -25,7 +30,14 @@ export class OptionsInLocalStorage implements IOptionsAsync {
    */
   public async option(name: string, defaultValue?: string): Promise<IOptionAsync> {
     const storageValue = await this.getOrSetStorageValue(name, defaultValue ? defaultValue : '')
-    return new OptionInLocalStorage(name, storageValue.default())
+    return new OptionInLocalStorage(this.localStorage, name, storageValue.default())
+  }
+  /**
+   * Removes option by given name.
+   * @param optionName name of option to be removed.
+   */
+  public remove(optionName: string): Promise<void> {
+    return this.localStorage.remove(optionName)
   }
   /**
    * Get value from local storage saved by given name of option. If there is no value saved in storage, it will be saved using given default value.
@@ -57,7 +69,7 @@ export class OptionsInLocalStorage implements IOptionsAsync {
    * @returns
    */
   private async toLocalStorage(optionName: string, storageValue: IStorageValue): Promise<void> {
-    return this.localStorage().set({ [optionName]: storageValue })
+    return this.localStorage.set({ [optionName]: storageValue })
   }
   /**
    * Get storageValue from local storage saved by optionName.
@@ -65,19 +77,6 @@ export class OptionsInLocalStorage implements IOptionsAsync {
    * @returns promise of an object which should be saved in local storage by optionName.
    */
   private async fromLocalStorage(optionName: string): Promise<Record<string, {}>> {
-    return this.localStorage().get(optionName)
-  }
-  /**
-   * Check and return localStorage. If not available in current context throw exception.
-   * @returns browser's localStorage.
-   */
-  private localStorage(): browser.Storage.LocalStorageArea {
-    if (browser?.storage && browser.storage?.local) {
-      return browser.storage.local
-    } else {
-      throw new Error(
-        "No local storage (browser.storage.local) available. Has the following permission been set: 'storage'?",
-      )
-    }
+    return this.localStorage.get(optionName)
   }
 }
